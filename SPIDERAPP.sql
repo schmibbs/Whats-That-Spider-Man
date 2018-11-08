@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS Location;
 DROP TABLE IF EXISTS Spider;
 DROP TABLE IF EXISTS Habitat;
 DROP TABLE IF EXISTS Color;
+DROP TABLE IF EXISTS Users;
 
 CREATE TABLE Location (
 latitude DECIMAL(9, 6),
@@ -30,6 +31,11 @@ secondarycolor char(25)
 INSERT INTO Habitat 
 VALUES(
 "North America", "America", "united states", "south florida", "miami"
+);
+
+CREATE TABLE Users ( 
+username char(25),
+passW char(25)
 );
 
 INSERT INTO Spider 
