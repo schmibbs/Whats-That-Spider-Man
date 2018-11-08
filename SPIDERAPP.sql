@@ -1,3 +1,4 @@
+SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE IF EXISTS Location;
 DROP TABLE IF EXISTS Spider;
 DROP TABLE IF EXISTS Habitat;
@@ -12,7 +13,8 @@ longitude DECIMAL(9, 6)
 CREATE TABLE Spider (
 commonname char(100) PRIMARY KEY,
 isvenomous bool,
-photo BLOB(10)
+photo BLOB(10),
+FOREIGN KEY(commonname) REFERENCES Color(commonname)
 );
 
 CREATE TABLE Habitat(
@@ -24,8 +26,10 @@ city char(30)
 );
 
 CREATE TABLE Color (
+commonname char(100),
 primarycolor char(25),
-secondarycolor char(25)
+secondarycolor char(25),
+FOREIGN KEY(commonname) REFERENCES Spider(commonname)
 );
 
 INSERT INTO Habitat 
@@ -45,10 +49,15 @@ VALUES
 ("Carolina wolf", FALSE, NULL),
 ("Southern Black Widow", TRUE, NULL);
 
+INSERT INTO Color
+VALUES 
+("Southern Black Widow", "black", "red"),
+("Carolina wolf", "brown", "brown");
+
 INSERT INTO Location
 VALUES
 (25.758916, -80.373866);
 
-select commonname, isvenomous
-from spider, Location, Habitat
-where Habitat.city = "miami";
+select Spider.commonname, city, primarycolor, secondarycolor
+from spider, Location, Habitat, Color
+where Habitat.city = "miami" AND Color.commonname = Spider.commonname AND primarycolor = "black";
