@@ -14,15 +14,19 @@ CREATE TABLE Spider (
 commonname char(100) PRIMARY KEY,
 isvenomous bool,
 photo BLOB(10),
-FOREIGN KEY(commonname) REFERENCES Color(commonname)
+description varchar(1000),
+FOREIGN KEY(commonname) REFERENCES Color(commonname),
+FOREIGN KEY(commonname) REFERENCES Habitat(commonname)
 );
 
 CREATE TABLE Habitat(
+commonname char(100),
 continent char(30),
 section char(30),
 country char(30),
 region char(30),
-city char(30)
+city char(30),
+FOREIGN KEY(commonname) REFERENCES Spider(commonname)
 );
 
 CREATE TABLE Color (
@@ -32,22 +36,22 @@ secondarycolor char(25),
 FOREIGN KEY(commonname) REFERENCES Spider(commonname)
 );
 
-INSERT INTO Habitat 
-VALUES(
-"North America", "America", "united states", "south florida", "miami"
+CREATE TABLE Users ( 
+username char(25) PRIMARY KEY,
+passW char(25)
 );
 
-CREATE TABLE Users ( 
-username char(25),
-passW char(25)
+INSERT INTO Habitat 
+VALUES(
+"Southern Black Widow","North America", "America", "united states", "south florida", "miami"
 );
 
 INSERT INTO Spider 
 VALUES
-("Spiny orb weaver", FALSE, NULL),
-("Huntsman", FALSE, NULL),
-("Carolina wolf", FALSE, NULL),
-("Southern Black Widow", TRUE, NULL);
+("Spiny orb weaver", FALSE, NULL, "See these guys in my backyard all the time"),
+("Huntsman", FALSE, NULL, "big enough to eat lizards"),
+("Carolina wolf", FALSE, NULL, "Gross pimple like babies"),
+("Southern Black Widow", TRUE, NULL, "Do not slap onto friends");
 
 INSERT INTO Color
 VALUES 
