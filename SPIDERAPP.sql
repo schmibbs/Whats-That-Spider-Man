@@ -4,10 +4,14 @@ DROP TABLE IF EXISTS Spider;
 DROP TABLE IF EXISTS Habitat;
 DROP TABLE IF EXISTS Color;
 DROP TABLE IF EXISTS Users;
+DROP PROCEDURE IF EXISTS nameSearch;
+DROP PROCEDURE IF EXISTS userPicLocations;
 
 CREATE TABLE Location (
+username char(25) PRIMARY KEY,
 latitude DECIMAL(9, 6),
-longitude DECIMAL(9, 6)
+longitude DECIMAL(9, 6),
+FOREIGN KEY (username) REFERENCES Users(username)
 );
 
 CREATE TABLE Spider (
@@ -38,7 +42,8 @@ FOREIGN KEY(commonname) REFERENCES Spider(commonname)
 
 CREATE TABLE Users ( 
 username char(25) PRIMARY KEY,
-passW char(25)
+passW char(25),
+FOREIGN KEY (username) REFERENCES Location(username)
 );
 
 INSERT INTO Habitat 
@@ -60,8 +65,24 @@ VALUES
 
 INSERT INTO Location
 VALUES
-(25.758916, -80.373866);
+("Schmibbs", 25.758916, -80.373866);
 
+DELIMITER sqlPls
+CREATE PROCEDURE nameSearch(spiderName char(100))
+BEGIN
 select Spider.commonname, city, primarycolor, secondarycolor
 from spider, Location, Habitat, Color
-where Habitat.city = "miami" AND Color.commonname = Spider.commonname AND primarycolor = "black";
+where Color.commonname = Spider.commonname AND Spider.commonname = spiderName;
+END sqlPls
+
+CREATE PROCEDURE userPicLocations(passedUserName char(25))
+BEGIN
+select latitude, longitude
+from Location, Users
+where Location.username = Users.username AND Location.username = passedUserName;
+END sqlPls
+
+DELIMITER ;
+
+-- call nameSearch("Carolina Wolf");
+ call userPicLocations("Schmibbs");
