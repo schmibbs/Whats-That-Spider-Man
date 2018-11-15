@@ -6,9 +6,10 @@ DROP TABLE IF EXISTS Color;
 DROP TABLE IF EXISTS Users;
 DROP PROCEDURE IF EXISTS nameSearch;
 DROP PROCEDURE IF EXISTS userPicLocations;
+DROP PROCEDURE IF EXISTS spiderHabitat;
 
 CREATE TABLE Location (
-username char(25) PRIMARY KEY,
+username char(25),
 latitude DECIMAL(9, 6),
 longitude DECIMAL(9, 6),
 FOREIGN KEY (username) REFERENCES Users(username)
@@ -47,9 +48,11 @@ FOREIGN KEY (username) REFERENCES Location(username)
 );
 
 INSERT INTO Habitat 
-VALUES(
-"Southern Black Widow","North America", "America", "united states", "south florida", "miami"
-);
+VALUES
+("Southern Black Widow","North America", "America", "united states", "south florida", "miami"),
+("Spiny Orb Weaver","North America", "America", "united states", "south florida", "miami"),
+("Carolina wolf","North America", "America", "united states", "south florida", "miami"),
+("Huntsman","North America", "America", "united states", "south florida", "miami");
 
 INSERT INTO Spider 
 VALUES
@@ -65,7 +68,19 @@ VALUES
 
 INSERT INTO Location
 VALUES
-("Schmibbs", 25.758916, -80.373866);
+("Schmibbs", 25.758916, -80.373866),
+("Schmibbs", 12.52343, -64.12546),
+("Boah", 25.758916, -80.373866),
+("Boah", 25.758916, -80.373866),
+("Schmibbs", 19.567, 34.9876);
+
+INSERT INTO Users
+VALUES
+("Schmibbs","Hunter2"),
+("xXFrankieJXx","12345"),
+("Jumbohole","12345"),
+("Boah","12345"),
+("Cornboy","Hunter2");
 
 DELIMITER sqlPls
 CREATE PROCEDURE nameSearch(spiderName char(100))
@@ -82,7 +97,21 @@ from Location, Users
 where Location.username = Users.username AND Location.username = passedUserName;
 END sqlPls
 
+CREATE PROCEDURE spiderHabitat(spiderName char(25))
+BEGIN
+select continent, section, country, region, city
+from Habitat
+where commonname = spiderName;
+END sqlPls
+
+CREATE PROCEDURE spiderAmount(spiderName char(25))
+BEGIN
+select  COUNT(commonname)
+from Habitat
+where commonname = spiderName;
+END sqlPls
 DELIMITER ;
 
 -- call nameSearch("Carolina Wolf");
- call userPicLocations("Schmibbs");
+-- call userPicLocations("boah");
+call spiderHabitat("Carolina wolf");
