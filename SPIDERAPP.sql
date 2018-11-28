@@ -27,7 +27,6 @@ FOREIGN KEY(commonname) REFERENCES Habitat(commonname)
 CREATE TABLE Habitat(
 commonname char(100),
 continent char(30),
-section char(30),
 country char(30),
 region char(30),
 city char(30),
@@ -49,10 +48,10 @@ FOREIGN KEY (username) REFERENCES Location(username)
 
 INSERT INTO Habitat 
 VALUES
-("Southern Black Widow","North America", "America", "united states", "south florida", "miami"),
-("Spiny Orb Weaver","North America", "America", "united states", "south florida", "miami"),
-("Carolina wolf","North America", "America", "united states", "south florida", "miami"),
-("Huntsman","North America", "America", "united states", "south florida", "miami");
+("Southern Black Widow","North America", "united states", "south florida", "miami"),
+("Spiny Orb Weaver","North America", "united states", "south florida", "miami"),
+("Carolina wolf","North America", "united states", "south florida", "miami"),
+("Huntsman","North America", "united states", "south florida", "miami");
 
 INSERT INTO Spider 
 VALUES
@@ -109,6 +108,48 @@ BEGIN
 select  COUNT(commonname)
 from Habitat
 where commonname = spiderName;
+END sqlPls
+
+CREATE PROCEDURE venomousSpiders(spiderName char(25))
+BEGIN
+select commonname
+from spider
+where venomous = true;
+END sqlPls
+
+CREATE PROCEDURE continentSearch(continentName char(25))
+BEGIN
+select commonname
+from spider, habitat
+where spider.commonname = habitat.commonname AND continent = continentName;
+END sqlPls
+
+CREATE PROCEDURE countrySearch(countryName char(25))
+BEGIN
+select commonname
+from spider, habitat
+where spider.commonname = habitat.commonname AND country = countryName;
+END sqlPls
+
+CREATE PROCEDURE stateSearch(stateName char(25))
+BEGIN
+select commonname
+from spider, habitat
+where spider.commonname = habitat.commonname AND state = stateName;
+END sqlPls
+
+CREATE PROCEDURE citySearch(cityName char(25))
+BEGIN
+select commonname
+from spider, habitat
+where spider.commonname = habitat.commonname AND city = cityName;
+END sqlPls
+
+CREATE PROCEDURE colorSearch(mainColor char(25), auxColor char(25))
+BEGIN
+select commonname
+from color
+where primarycolor = mainColor AND auxColor = secondarycolor;
 END sqlPls
 DELIMITER ;
 
