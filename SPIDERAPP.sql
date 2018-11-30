@@ -7,6 +7,13 @@ DROP TABLE IF EXISTS Users;
 DROP PROCEDURE IF EXISTS nameSearch;
 DROP PROCEDURE IF EXISTS userPicLocations;
 DROP PROCEDURE IF EXISTS spiderHabitat;
+DROP PROCEDURE IF EXISTS spiderAmount;
+DROP PROCEDURE IF EXISTS venomousSpiders;
+DROP PROCEDURE IF EXISTS continentSearch;
+DROP PROCEDURE IF EXISTS countrySearch;
+DROP PROCEDURE IF EXISTS stateSearch;
+DROP PROCEDURE IF EXISTS citySearch;
+DROP PROCEDURE IF EXISTS colorSearch;
 
 CREATE TABLE Location (
 username char(25),
@@ -84,7 +91,7 @@ VALUES
 DELIMITER sqlPls
 CREATE PROCEDURE nameSearch(spiderName char(100))
 BEGIN
-select Spider.commonname, city, primarycolor, secondarycolor
+select DISTINCT Spider.commonname, city, primarycolor, secondarycolor
 from spider, Location, Habitat, Color
 where Color.commonname = Spider.commonname AND Spider.commonname = spiderName;
 END sqlPls
@@ -98,7 +105,7 @@ END sqlPls
 
 CREATE PROCEDURE spiderHabitat(spiderName char(25))
 BEGIN
-select continent, section, country, region, city
+select continent, country, region, city
 from Habitat
 where commonname = spiderName;
 END sqlPls
@@ -153,6 +160,6 @@ where primarycolor = mainColor AND auxColor = secondarycolor;
 END sqlPls
 DELIMITER ;
 
--- call nameSearch("Carolina Wolf");
+call nameSearch("Carolina Wolf");
 -- call userPicLocations("boah");
-call spiderHabitat("Carolina wolf");
+-- call spiderHabitat("Carolina wolf");
